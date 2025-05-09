@@ -1,0 +1,71 @@
+Bike Buyer Prediction Model Documentation
+
+Project Overview
+This machine learning model predicts whether a customer is likely to purchase a bike based on demographic and lifestyle features. The model is integrated into a Django web application that allows authenticated users to input data and get predictions.
+
+Dataset Summary
+- Source: Bike Buyers dataset (CSV)
+- Records: 1000
+- Target Variable: Purchased Bike (Yes/No)
+
+Features Used in Model:
+1. Age – Customer’s age  
+2. Income – Annual income in USD  
+3. Children – Number of children  
+4. Cars – Number of cars owned  
+5. Married – Marital status (encoded as binary)  
+6. Male – Gender (binary encoded)  
+7. Masters – Education level (binary: has Master’s degree)  
+8. Region_North America – Region encoded  
+9. Occupation_Professional – Encoded occupation type  
+10. Commute Distance_2-5 Miles – Encoded commute distance  
+
+Model Information
+- Algorithm Used: Random Forest Classifier  
+- Preprocessing:
+  - One-hot encoding for categorical variables
+  - Binary encoding for boolean fields
+  - Feature scaling was not applied (Random Forest handles unscaled data)
+- Train-Test Split: 80% training, 20% testing
+- Model Accuracy: ~72.50%
+
+Model Training Code (Summary)
+# Load data
+df = pd.read_csv('training_data.csv')
+
+# Feature Engineering
+df = pd.get_dummies(df, columns=['Region', 'Occupation', 'Commute Distance'], drop_first=True)
+
+# Binary Encoding
+df['Married'] = df['Marital Status'].apply(lambda x: 1 if x == 'Yes' else 0)
+df['Male'] = df['Gender'].apply(lambda x: 1 if x == 'Male' else 0)
+df['Masters'] = df['Education'].apply(lambda x: 1 if x == 'Masters' else 0)
+
+# Feature Selection
+features = [list of selected features...]
+X = df[features]
+y = df['Purchased Bike'].apply(lambda x: 1 if x == 'Yes' else 0)
+
+# Model Training
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+Django Integration
+- View: predict_view() receives POST data and returns prediction
+- Form: User inputs data through a styled HTML form
+- Security: Only authenticated users can access prediction and dashboard
+- Dashboard: Displays basic statistics and a matplotlib plot (embedded via base64)
+
+Sample Output
+Prediction
+- Input: User data (age, income, etc.)
+- Output: Will Buy or Will Not Buy
+
+Dashboard
+- Total records: 1000
+- Summary statistics (mean, std, min, max)
+- Visualization: Countplot of purchases by occupation
+
+Limitations
+- Model performance depends on data quality and balance
+- Some categorical levels may not generalize well if not seen during training
