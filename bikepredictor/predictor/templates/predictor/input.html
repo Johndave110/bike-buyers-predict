@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Buyer Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'home' %}"><button>Home</button></a>
+    <h1>Will the Customer Buy a Bike?</h1>
+    <form method="post">
+        {% csrf_token %}
+        Age: <input type="number" name="age"><br>
+        Income: <input type="number" name="income"><br>
+        Children: <input type="number" name="children"><br>
+        Cars: <input type="number" name="cars"><br>
+        Married:
+        <select name="married">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select><br>
+        Gender:
+        <select name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br>
+        Education:
+        <select name="education">
+            <option value="masters">Masters</option>
+            <option value="bachelors">Bachelors</option>
+        </select><br>
+        Region:
+        <select name="region">
+            <option value="North America">North America</option>
+            <option value="Pacific">Pacific</option>
+        </select><br>
+        Occupation:
+        <select name="occupation">
+            <option value="Manual">Manual</option>
+            <option value="Professional">Professional</option>
+            <option value="Skilled Manual">Skilled Manual</option>
+        </select><br>
+        Commute Distance:
+        <select name="commute">
+            <option value="1-2 Miles">1-2 Miles</option>
+            <option value="2-5 Miles">2-5 Miles</option>
+            <option value="5-10 Miles">5-10 Miles</option>
+            <option value="10+ Miles">10+ Miles</option>
+        </select><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+        <h2>Prediction: {{ prediction }}</h2>
+    {% endif %}
+</body>
+</html>
